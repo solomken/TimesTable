@@ -41,11 +41,10 @@ struct SettingsView: View {
                             .padding()
                         }
                     }
-                    //.frame(width: 400, height: 570)
                     .scrollContentBackground(.hidden)
                     .background {
                         Image("background")
-                            .opacity(0.05)
+                            .opacity(0.5)
                     }
                     .listStyle(.grouped)
                     .listRowBackground(Color.red)
