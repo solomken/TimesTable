@@ -41,14 +41,17 @@ struct ContentView: View {
                     .keyboardType(.decimalPad)
                     .focused($focusedField, equals: .inputField)
                 
-                Button("Next"){
+                Button(action: {
                     checkAnswer()
+                }){
+                   Text("Next")
+                        .frame(width: 200, height: 70)
                 }
-                .frame(width: 200, height: 70)
                 .foregroundColor(.white)
                 .background(.cyan)
                 .font(.headline)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
+                .contentShape(RoundedRectangle(cornerRadius: 20))
                 
                 Spacer()
             }
