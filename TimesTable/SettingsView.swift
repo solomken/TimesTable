@@ -13,10 +13,39 @@ struct SettingsView: View {
     
     let questionsAmount = [5, 10, 15]
     
+    @State private var animationAmount = 1.0
+    
+    let title = Array("Times table game")
+    @State private var enabled = false
+    @State private var dragAmount = CGSize.zero
+    
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
+                    Spacer()
+                    HStack(spacing: 0) {
+                        ForEach (0..<title.count) { num in
+                            Text(String(title[num]))
+                                .foregroundColor(.white)
+                                .font(.largeTitle)
+                                .padding(3)
+                                .background(enabled ? .orange : .cyan)
+                                .offset(dragAmount)
+                                .animation(
+                                    .default.delay(Double(num) / 20),
+                                    value: dragAmount
+                                )
+                        }
+                    }
+                    .gesture(
+                        DragGesture()
+                            .onChanged { dragAmount = $0.translation }
+                            .onEnded { _ in
+                                dragAmount = .zero
+                                enabled.toggle()
+                            }
+                    )
                     List {
                         Section {
                             Text("Select times table for practicing")
@@ -44,7 +73,7 @@ struct SettingsView: View {
                     .scrollContentBackground(.hidden)
                     .background {
                         Image("background")
-                            .opacity(0.5)
+                            .opacity(0.10)
                     }
                     .listStyle(.grouped)
                     .listRowBackground(Color.red)
@@ -60,9 +89,24 @@ struct SettingsView: View {
                             .background(.cyan)
                             .font(.headline)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .stroke(.cyan)
+                                    .scaleEffect(animationAmount)
+                                    .opacity(2 - animationAmount)
+                                    .animation(
+                                        .easeInOut(duration: 2)
+                                        .repeatForever(autoreverses: false),
+                                        value: animationAmount
+                                    )
+                            )
+                            .onAppear {
+                                animationAmount = 2
+                            }
+                        
                     }
                 }
-                .navigationTitle("Settings")
+                //.navigationTitle("Settings")
             }
         }
     }
